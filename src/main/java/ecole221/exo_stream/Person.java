@@ -16,18 +16,18 @@ public record Person(String matricule, String nom, LocalDate dateNaissance) {
 
     public static void main(String[] args) {
         List<Person> persons = List.of(
-                new Person ("001", "Tapha", LocalDate.parse("1970-09-25")),
-                new Person("002", "Moussa",  LocalDate.parse("1950-09-25")),
-                new Person("003", "Fatou",  LocalDate.parse("2003-09-25")),
-                new Person("004", "Saly",  LocalDate.parse("2002-09-25")),
-                new Person("005", "Moussa",  LocalDate.parse("2007-09-25")),
-                new Person("006", "Badara",  LocalDate.parse("2010-09-25")),
-                new Person("006", "Abdou",  LocalDate.parse("1985-01-02"))
+                new Person("001", "Tapha", LocalDate.parse("1970-09-25")),
+                new Person("002", "Moussa", LocalDate.parse("1950-09-25")),
+                new Person("003", "Fatou", LocalDate.parse("2003-09-25")),
+                new Person("004", "Saly", LocalDate.parse("2002-09-25")),
+                new Person("005", "Moussa", LocalDate.parse("2007-09-25")),
+                new Person("006", "Badara", LocalDate.parse("2010-09-25")),
+                new Person("006", "Abdou", LocalDate.parse("1985-01-02"))
         );
 
         // Liste des employés ayant plus de 18 ans
         List<Person> isOld18 = persons.stream()
-                .filter(person -> person.getAge() >= 18 )
+                .filter(person -> person.getAge() >= 18)
                 .toList();
 
         System.out.println("Personnes ayant plus de 18 ans :");
@@ -47,7 +47,6 @@ public record Person(String matricule, String nom, LocalDate dateNaissance) {
         System.out.println("Tri par ordre croissant selon l'age :");
         List<Person> filterByAsc = persons.stream()
                 .sorted(Comparator.comparingInt(Person::getAge))
-//               .sorted(Comparator.comparingInt(Person::getAge).reversed())
                 .toList();
         filterByAsc.forEach(System.out::println);
 
@@ -56,7 +55,6 @@ public record Person(String matricule, String nom, LocalDate dateNaissance) {
         System.out.println("Tri par ordre alphabetique :");
         List<Person> filterByName = persons.stream()
                 .sorted(Comparator.comparing(Person::nom))
-//               .sorted(Comparator.comparingInt(Person::getAge).reversed())
                 .toList();
         filterByName.forEach(System.out::println);
 
@@ -70,7 +68,7 @@ public record Person(String matricule, String nom, LocalDate dateNaissance) {
 
         System.out.println("-".repeat(50));
 
-        // Calcul de l'age moyenne
+        // Calcul de l'age moyen
         Double moyenne_ages = persons.stream()
                 .mapToInt(Person::getAge)
                 .average().orElse(0.0);
@@ -101,27 +99,54 @@ public record Person(String matricule, String nom, LocalDate dateNaissance) {
 
         System.out.println("-".repeat(50));
 
-        // Vérifie s'il existe au moins un employé ayant moins de 18 ans.
+        // Vérifier s'il existe au moins un employé ayant moins de 18 ans.
+        boolean hasMinor = persons.stream()
+                .anyMatch(person -> person.getAge() < 18);
+        System.out.println("Existe-t-il un employé de moins de 18 ans ? " + hasMinor);
 
+        System.out.println("-".repeat(50));
 
-        // Vérifie si tous les employés ont un matricule non nul.
+        // Vérifier si tous les employés ont un matricule non nul.
+        boolean allHaveMatricule = persons.stream()
+                .allMatch(person -> person.matricule() != null && !person.matricule().isEmpty());
+        System.out.println("Tous les employés ont-ils un matricule non nul ? " + allHaveMatricule);
 
+        System.out.println("-".repeat(50));
 
-        // Pour chaque employé, calcule la date exacte à laquelle il atteindra 60 ans, en ajoutant 60 années à sa dateNaissance.
+        // Pour chaque employé, calculer la date exacte à laquelle il atteindra 60 ans.
+        System.out.println("Date à laquelle chaque employé atteindra 60 ans :");
+        persons.forEach(person -> {
+            LocalDate dateAt60 = person.dateNaissance().plusYears(60);
+            System.out.println(person.nom() + " atteindra 60 ans le : " + dateAt60);
+        });
 
+        System.out.println("-".repeat(50));
 
-        // Calculez l’âge réel (aujourd’hui)
+        // Récupérer tous les employés nés avant l’année 1990.
+        List<Person> bornBefore1990 = persons.stream()
+                .filter(person -> person.dateNaissance().getYear() < 1990)
+                .toList();
+        System.out.println("Employés nés avant 1990 :");
+        bornBefore1990.forEach(System.out::println);
 
+        System.out.println("-".repeat(50));
 
-        // Récupère tous les employés :
-        //    • Nés avant l’année 1990.
+        // Récupérer tous les employés nés après l’année 2000.
+        List<Person> bornAfter2000 = persons.stream()
+                .filter(person -> person.dateNaissance().getYear() > 2000)
+                .toList();
+        System.out.println("Employés nés après 2000 :");
+        bornAfter2000.forEach(System.out::println);
 
-        //    • Nés après l’année 2000.
+        System.out.println("-".repeat(50));
 
-        //    • Nés durant les années 1980 (entre 1980 et 1989 inclus)
-
+        // Récupérer tous les employés nés durant les années 1980 (entre 1980 et 1989 inclus).
+        List<Person> bornIn1980s = persons.stream()
+                .filter(person -> person.dateNaissance().getYear() >= 1980 && person.dateNaissance().getYear() <= 1989)
+                .toList();
+        System.out.println("Employés nés dans les années 1980 :");
+        bornIn1980s.forEach(System.out::println);
     }
-
 
     @Override
     public String toString() {

@@ -101,6 +101,25 @@ public record Person(String matricule, String nom, LocalDate dateNaissance) {
 
         System.out.println("-".repeat(50));
 
+        // Vérifie s'il existe au moins un employé ayant moins de 18 ans.
+
+
+        // Vérifie si tous les employés ont un matricule non nul.
+
+
+        // Pour chaque employé, calcule la date exacte à laquelle il atteindra 60 ans, en ajoutant 60 années à sa dateNaissance.
+
+
+        // Calculez l’âge réel (aujourd’hui)
+
+
+        // Récupère tous les employés :
+        //    • Nés avant l’année 1990.
+
+        //    • Nés après l’année 2000.
+
+        //    • Nés durant les années 1980 (entre 1980 et 1989 inclus)
+
     }
 
 
@@ -108,6 +127,4 @@ public record Person(String matricule, String nom, LocalDate dateNaissance) {
     public String toString() {
         return String.format("Matricule: %s, Nom: %s, Age: %d;", matricule, nom, getAge());
     }
-
-
 }
